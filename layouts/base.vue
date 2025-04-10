@@ -2,7 +2,6 @@
 
 <template>
   <div class="layout-base relative">
-    <ComMouseBloom />
     <ComHeader />
     <main>
       <slot />

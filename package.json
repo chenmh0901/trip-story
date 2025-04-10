@@ -16,6 +16,7 @@
     "@nuxt/icon": "^1.4.5",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/color-mode": "^3.4.2",
+    "@nuxtjs/i18n": "9.5.3",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@tailwindcss/typography": "^0.5.13",
     "@vueuse/core": "^12.2.0",
