@@ -7,15 +7,31 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "format": "prettier --write \"**/*.{js,vue,json}\"",
+    "sync": "/home/nes/apps/sync.sh"
   },
   "dependencies": {
-    "nuxt": "^3.16.2",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "@nuxt/eslint": "^0.7.5",
+    "@nuxt/icon": "^1.4.5",
+    "@nuxt/image": "^1.7.0",
+    "@nuxtjs/color-mode": "^3.4.2",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@tailwindcss/typography": "^0.5.13",
+    "@vueuse/core": "^12.2.0",
+    "dayjs": "^1.11.12",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "markdown-it-katex": "^2.0.3",
+    "markdown-it-toc-done-right": "^4.2.0",
+    "nuxt": "^3.12.4",
+    "vue": "latest"
   },
-  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af",
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.13.2"
-  }
+    "@types/markdown-it": "^14.1.2",
+    "prettier": "^3.3.3",
+    "prettier-eslint": "^16.3.0",
+    "sass": "^1.77.8"
+  },
+  "packageManager": "pnpm@9.12.2+sha512.22721b3a11f81661ae1ec68ce1a7b879425a1ca5b991c975b074ac220b187ce56c708fe5db69f4c962c989452eee76c82877f4ee80f474cebd61ee13461b6228"
 }

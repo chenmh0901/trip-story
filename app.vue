@@ -1,5 +1,13 @@
+<script lang="ts" setup></script>
+
 <template>
-  <div>
-    <p class="text-blue-500">Hello world</p>
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
+
+<style lang="scss">
+body {
+  overflow-y: scroll;
+}
+</style>
