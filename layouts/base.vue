@@ -14,5 +14,9 @@
 .layout-base {
   @apply min-h-[100vh] min-w-[900px];
   @apply flex flex-col;
+
+  main {
+    @apply pt-4;
+  }
 }
 </style>

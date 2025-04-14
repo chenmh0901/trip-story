@@ -1,21 +1,23 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ColorMode from './color-mode.vue'
+</script>
 
 <template>
   <div class="header">
     <div class="header__logo">
-      <img src="/assets/imgs/logo.png" alt="logo" />
+      <NuxtImg src="/images/logo.png" alt="logo" />
       <span class="brand">Trip Story</span>
     </div>
     <div class="header__nav">
-      <div>Home</div>
-      <div>Society</div>
+      <NuxtLink to="/">{{ $t('home') }}</NuxtLink>
+      <NuxtLink to="/society">Society</NuxtLink>
       <div>Posts</div>
     </div>
     <div class="header__setting">
-      <button class="button">click</button>
+      <ColorMode />
       <div class="avatar">
         <!-- TODO:add user upload image -->
-        <img src="/assets/imgs/avatar.png" alt="avatar" />
+        <NuxtImg src="/images/avatar.png" alt="avatar" />
       </div>
     </div>
   </div>
@@ -23,7 +25,7 @@
 
 <style lang="scss" scoped>
 .header {
-  @apply max-w-[1200px] w-[100%] mx-auto;
+  @apply max-w-[1280px] w-[100%] mx-auto;
 
   @apply flex justify-between items-center;
   @apply pt-8 px-6;
@@ -46,7 +48,7 @@
   }
 
   &__setting {
-    @apply flex gap-4;
+    @apply flex gap-4 items-center bg-red-50;
 
     .button {
       @apply text-sm p-2 rounded-full bg-purple-500 text-white hover:bg-purple-600 transition-all duration-300;
