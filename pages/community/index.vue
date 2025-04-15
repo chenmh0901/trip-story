@@ -24,26 +24,65 @@ const posts = [
   {
     id: 1,
     title: '成都三日游｜探店必吃美食清单',
-    cover: '/imgs/posts/chengdu-food.jpg',
+    cover: '/images/posts/guangxi.png',
     description: '整理了成都最地道的美食，从早餐到夜宵，承包你的整个行程',
     likes: 2341,
     comments: 156,
     author: {
       name: '美食探店家',
-      avatar: '/imgs/avatars/user1.jpg',
+      avatar: '/images/avatars/user1.png',
     },
     tags: ['成都', '美食', '探店'],
   },
   {
     id: 2,
     title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
-    cover: '/imgs/posts/hk-view.jpg',
+    cover: '/images/posts/kyoto.png',
     description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
     likes: 1892,
     comments: 89,
     author: {
       name: '摄影师阿杰',
-      avatar: '/imgs/avatars/user2.jpg',
+      avatar: '/images/avatars/user2.png',
+    },
+    tags: ['香港', '摄影', '风景'],
+  },
+  {
+    id: 3,
+    title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
+    cover: '/images/posts/kyoto.png',
+    description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
+    likes: 1892,
+    comments: 89,
+    author: {
+      name: '摄影师阿杰',
+      avatar: '/images/avatars/user2.png',
+    },
+    tags: ['香港', '摄影', '风景'],
+  },
+  {
+    id: 4,
+    title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
+    cover: '/images/posts/kyoto.png',
+    description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
+    likes: 1892,
+    comments: 89,
+    author: {
+      name: '摄影师阿杰',
+      avatar: '/images/avatars/user2.png',
+    },
+    tags: ['香港', '摄影', '风景'],
+  },
+  {
+    id: 5,
+    title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
+    cover: '/images/posts/kyoto.png',
+    description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
+    likes: 1892,
+    comments: 89,
+    author: {
+      name: '摄影师阿杰',
+      avatar: '/images/avatars/user2.png',
     },
     tags: ['香港', '摄影', '风景'],
   },
@@ -57,7 +96,7 @@ const setCategory = (id: string) => {
 <template>
   <div class="society">
     <!-- 顶部导航和筛选 -->
-    <div class="society__header sticky top-0 z-50 bg-white shadow-sm">
+    <div class="society__header sticky top-0 z-50 shadow-sm">
       <div class="max-w-[1200px] mx-auto px-4 py-4">
         <!-- 分类导航 -->
         <div class="flex items-center space-x-6 overflow-x-auto pb-2">
@@ -65,7 +104,7 @@ const setCategory = (id: string) => {
             v-for="cat in categories"
             :key="cat.id"
             class="px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors"
-            :class="selectedCategory === cat.id ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'"
+            :class="selectedCategory === cat.id ? 'bg-[#3B82F6] text-white' : 'bg-gray-100 hover:bg-gray-200'"
             @click="setCategory(cat.id)"
           >
             {{ cat.name }}
@@ -81,7 +120,7 @@ const setCategory = (id: string) => {
         <div v-for="post in posts" :key="post.id" class="post-card bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
           <!-- 封面图 -->
           <div class="relative pb-[100%]">
-            <img :src="post.cover" :alt="post.title" class="absolute inset-0 w-full h-full object-cover" />
+            <NuxtImg :src="post.cover" :alt="post.title" class="absolute inset-0 w-full h-full object-cover" />
           </div>
 
           <!-- 内容区 -->
@@ -99,7 +138,7 @@ const setCategory = (id: string) => {
             <!-- 作者信息 -->
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <img :src="post.author.avatar" :alt="post.author.name" class="w-6 h-6 rounded-full" />
+                <NuxtImg :src="post.author.avatar" :alt="post.author.name" class="w-6 h-6 rounded-full" />
                 <span class="text-sm text-gray-600">{{ post.author.name }}</span>
               </div>
             </div>
@@ -133,7 +172,7 @@ const setCategory = (id: string) => {
     </div>
 
     <!-- 悬浮发布按钮 -->
-    <UButton class="fixed right-8 bottom-8 rounded-full w-14 h-14 shadow-lg" color="primary" icon="i-ph-plus" />
+    <button class="fixed right-8 bottom-8 rounded-full w-14 h-14 shadow-lg" color="primary" icon="i-ph-plus" />
   </div>
 </template>
 
