@@ -10,8 +10,8 @@ import ColorMode from './color-mode.vue'
     </div>
     <div class="header__nav">
       <NuxtLink to="/">{{ $t('home') }}</NuxtLink>
-      <NuxtLink to="/society">Society</NuxtLink>
-      <div>Posts</div>
+      <NuxtLink to="/society">{{ $t('Community') }}</NuxtLink>
+      <div>{{ $t('Posts') }}</div>
     </div>
     <div class="header__setting">
       <ColorMode />
