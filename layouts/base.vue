@@ -1,22 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="layout-base relative">
+  <div class="min-h-[100vh] min-w-[900px] flex flex-col relative">
     <ComHeader />
-    <main>
+    <main class="pt-4">
       <slot />
     </main>
     <ComFooter />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.layout-base {
-  @apply min-h-[100vh] min-w-[900px];
-  @apply flex flex-col;
-
-  main {
-    @apply pt-4;
-  }
-}
-</style>

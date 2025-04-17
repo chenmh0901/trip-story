@@ -157,8 +157,8 @@ const saveDraft = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.upload-post {
+<style lang="css" scoped>
+@import 'tailwindcss' .upload-post {
   @apply max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-sm;
 }
 

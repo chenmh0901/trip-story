@@ -12,29 +12,33 @@
     "sync": "/home/nes/apps/sync.sh"
   },
   "dependencies": {
-    "@nuxt/eslint": "^0.7.5",
-    "@nuxt/icon": "^1.4.5",
-    "@nuxt/image": "^1.7.0",
-    "@nuxtjs/color-mode": "^3.4.2",
-    "@nuxtjs/i18n": "9.5.3",
-    "@nuxtjs/tailwindcss": "^6.12.1",
-    "@tailwindcss/typography": "^0.5.13",
-    "@vueuse/core": "^12.2.0",
-    "dayjs": "^1.11.12",
-    "markdown-it": "^14.1.0",
-    "markdown-it-anchor": "^9.2.0",
-    "markdown-it-katex": "^2.0.3",
-    "markdown-it-toc-done-right": "^4.2.0",
-    "nuxt": "^3.12.4",
-    "vue": "latest"
+    "@iconify-json/uil": "^1.2.3",
+    "@nuxtjs/i18n": "^9.5.3",
+    "@tailwindcss/typography": "latest",
+    "@vueuse/core": "latest",
+    "dayjs": "latest",
+    "markdown-it": "latest",
+    "markdown-it-anchor": "latest",
+    "markdown-it-katex": "latest",
+    "markdown-it-toc-done-right": "latest",
+    "@nuxt/eslint": "1.3.0",
+    "@nuxt/fonts": "0.11.1",
+    "@nuxt/icon": "1.12.0",
+    "@nuxt/image": "1.10.0",
+    "@nuxt/ui": "3.0.2",
+    "eslint": "^9.0.0",
+    "nuxt": "^3.16.2",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.6.3",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@types/markdown-it": "^14.1.2",
-    "prettier": "^3.3.3",
-    "prettier-eslint": "^16.3.0",
-    "sass": "^1.77.8",
-    "typescript": "^5.8.3",
-    "vue-tsc": "^2.2.8"
-  },
-  "packageManager": "pnpm@9.12.2+sha512.22721b3a11f81661ae1ec68ce1a7b879425a1ca5b991c975b074ac220b187ce56c708fe5db69f4c962c989452eee76c82877f4ee80f474cebd61ee13461b6228"
+    "@types/markdown-it": "latest",
+    "prettier": "latest",
+    "prettier-eslint": "latest",
+    "sass": "latest",
+    "typescript": "latest",
+    "vue-tsc": "latest"
+  }
 }

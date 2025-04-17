@@ -176,7 +176,9 @@ const setCategory = (id: string) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+@import 'tailwindcss';
+
 .society {
   @apply min-h-screen bg-gray-50;
 
@@ -184,7 +186,6 @@ const setCategory = (id: string) => {
     @apply border-b;
   }
 
-  // 自定义滚动条样式
   ::-webkit-scrollbar {
     @apply h-1.5 w-1.5;
   }
@@ -198,7 +199,6 @@ const setCategory = (id: string) => {
   }
 }
 
-// 卡片悬停效果
 .post-card {
   &:hover {
     transform: translateY(-2px);

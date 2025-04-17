@@ -181,7 +181,9 @@ const showUploadPost = ref(false)
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+@import 'tailwindcss';
+
 .posts {
   @apply min-h-screen bg-gray-50;
 
@@ -189,7 +191,6 @@ const showUploadPost = ref(false)
     @apply border-b;
   }
 
-  // 自定义滚动条样式
   ::-webkit-scrollbar {
     @apply h-1.5 w-1.5;
   }
@@ -203,7 +204,6 @@ const showUploadPost = ref(false)
   }
 }
 
-// 卡片悬停效果
 .post-card {
   &:hover {
     transform: translateY(-2px);

@@ -1,15 +1,34 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-04-08',
   devtools: { enabled: true },
   modules: [
-    '@nuxt/icon',
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/color-mode',
     '@nuxt/image',
     '@nuxt/eslint',
+    '@nuxt/ui',
     '@nuxtjs/i18n',
+    '@nuxt/icon',
+    '@nuxt/fonts'
   ],
+  css: ['~/assets/css/main.css'],
+  ui: {
+    colorMode: true,
+  },
+  i18n: {
+    defaultLocale: 'zh',
+    locales: [
+      {
+        code: 'zh',
+        name: 'Chinese',
+        file: 'zh.json',
+      }, {
+        code: 'en',
+        name: 'English',
+        file: 'en.json',
+      }
+    ],
+  },
   app: {
     head: {
       link: [
@@ -21,28 +40,8 @@ export default defineNuxtConfig({
       ],
     },
   },
-  vite: {
-    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.webp'],
-  },
-  colorMode: {
-    classSuffix: '',
-  },
-  i18n: {
-    defaultLocale: 'zh',
-    locales: [
-      {
-        code: 'zh',
-        name: 'Chinese',
-        file: 'zh.json',
-      },
-      {
-        code: 'en',
-        name: 'English',
-        file: 'en.json',
-      },
-    ],
-  },
+
   image: {
-    dir: 'assets',
-  },
+    // options
+  }
 })

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { NuxtImg } from '#components'
-
 definePageMeta({
   layout: 'base',
 })
@@ -9,28 +7,28 @@ definePageMeta({
 const hotDestinations = [
   {
     name: '上海',
-    image: '/images/destinations/shanghai.png',
+    image: '~/assets/images/destinations/shanghai.png',
     description: '现代与传统交融的国际大都市，感受东方明珠的魅力',
     visits: '2,435',
     link: '/destinations/shanghai',
   },
   {
     name: '云南',
-    image: '/images/destinations/yunnan.png',
+    image: '~/assets/images/destinations/yunnan.png',
     description: '壮丽的自然风光与多彩的民族文化交相辉映',
     visits: '3,127',
     link: '/destinations/yunnan',
   },
   {
     name: '西藏',
-    image: '/images/destinations/tibet.png',
+    image: '~/assets/images/destinations/tibet.png',
     description: '神秘的高原圣地，体验独特的藏族文化与自然景观',
     visits: '1,836',
     link: '/destinations/tibet',
   },
   {
     name: '广西',
-    image: '/images/destinations/guangxi.png',
+    image: '~/assets/images/destinations/guangxi.png',
     description: '山水如画的自然景观，体验独特的喀斯特地貌',
     visits: '2,945',
     link: '/destinations/guangxi',
@@ -53,9 +51,9 @@ const featuredStories = [
   },
   {
     title: '马尔代夫的碧海蓝天',
-    image: '/images/destinations/maldives.png',
+    image: '/assets/images/destinations/maldives.png',
     author: {
-      avatar: '/images/avatars/user2.png',
+      avatar: '~/assets/images/avatars/user2.png',
       name: '海岛控',
     },
     date: '2024.01.12',
@@ -65,9 +63,9 @@ const featuredStories = [
   },
   {
     title: '阿尔卑斯山脉滑雪之旅',
-    image: '/images/destinations/alps.png',
+    image: '~/assets/images/destinations/alps.png',
     author: {
-      avatar: '/images/avatars/user3.png',
+      avatar: '~/assets/images/avatars/user3.png',
       name: '雪季漫游者',
     },
     date: '2024.01.30',
@@ -107,7 +105,7 @@ const travelInspirations = [
     <!-- Hero Section -->
     <section class="hero relative h-screen">
       <div class="absolute inset-0">
-        <NuxtImg src="/images/hero-bg.png" alt="探索世界的每个角落" class="w-full h-full" />
+        <img src="~/assets/images/hero-bg.png" alt="探索世界的每个角落" class="w-full h-full" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/10" />
       </div>
       <div class="relative container h-full flex flex-col justify-center items-center text-white">
@@ -126,7 +124,7 @@ const travelInspirations = [
         <h2 class="text-3xl font-bold mb-8">热门目的地</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <NuxtLink v-for="dest in hotDestinations" :key="dest.name" :to="dest.link" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-            <NuxtImg :src="dest.image" :alt="dest.name" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
+            <img :src="dest.image" :alt="dest.name" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
               <div class="absolute bottom-0 p-6">
                 <h3 class="text-2xl font-bold text-white mb-2">{{ dest.name }}</h3>
@@ -156,11 +154,11 @@ const travelInspirations = [
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="story in featuredStories" :key="story.title" class="bg-gray-800 rounded-xl overflow-hidden group">
             <div class="relative overflow-hidden">
-              <NuxtImg :src="story.image" :alt="story.title" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500" />
+              <img :src="story.image" :alt="story.title" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
             <div class="p-6">
               <div class="flex items-center mb-4">
-                <NuxtImg :src="story.author.avatar" :alt="story.author.name" class="w-10 h-10 rounded-full mr-3" />
+                <img :src="story.author.avatar" :alt="story.author.name" class="w-10 h-10 rounded-full mr-3" />
                 <div>
                   <h4 class="text-white font-medium">{{ story.author.name }}</h4>
                   <p class="text-gray-400 text-sm">{{ story.date }}</p>
@@ -204,7 +202,7 @@ const travelInspirations = [
             <button class="btn">立即加入</button>
           </div>
           <div class="md:w-1/2">
-            <NuxtImg format="webp" src="/images/community.png" alt="Travel Community" class="rounded-xl shadow-2xl" />
+            <img src="~/assets/images/community.png" alt="Travel Community" class="rounded-xl shadow-2xl" />
           </div>
         </div>
       </div>
@@ -212,7 +210,9 @@ const travelInspirations = [
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+@import 'tailwindcss';
+
 .home-page {
   @apply w-full;
 }
