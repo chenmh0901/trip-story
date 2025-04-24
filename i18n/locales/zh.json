@@ -1,5 +1,34 @@
 {
   "home": "首页",
   "Community": "社区",
-  "Posts": "日记"
+  "Posts": "日记",
+  "auth": {
+    "welcome_back": "欢迎回来",
+    "create_account": "创建账号",
+    "login_account": "登录你的账号",
+    "start_journey": "开始你的旅行故事",
+    "username": "用户名",
+    "phone": "手机号",
+    "password": "密码",
+    "verify_code": "验证码",
+    "get_code": "获取验证码",
+    "retry_after": "{count}秒后重试",
+    "login": "登录",
+    "register": "注册",
+    "to_register": "没有账号？立即注册",
+    "to_login": "已有账号？立即登录",
+    "register_success": "注册成功！",
+    "errors": {
+      "phone_required": "请输入手机号",
+      "phone_invalid": "请输入正确的手机号",
+      "username_required": "请输入用户名",
+      "username_length": "用户名至少3个字符",
+      "password_required": "请输入密码",
+      "password_length": "密码至少6个字符",
+      "password_format": "密码必须包含字母和数字",
+      "code_required": "请输入验证码",
+      "code_length": "验证码必须是6位数字",
+      "code_invalid": "验证码错误"
+    }
+  }
 }

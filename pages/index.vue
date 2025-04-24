@@ -212,7 +212,6 @@ const travelInspirations = [
 
 <style lang="css" scoped>
 @import 'tailwindcss';
-
 .home-page {
   @apply w-full;
 }

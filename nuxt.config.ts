@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
@@ -20,7 +21,7 @@ export default defineNuxtConfig({
     locales: [
       {
         code: 'zh',
-        name: 'Chinese',
+        name: '中文',
         file: 'zh.json',
       }, {
         code: 'en',
@@ -40,8 +41,10 @@ export default defineNuxtConfig({
       ],
     },
   },
-
+  vite: {
+    plugins: [tailwindcss()],
+  },
   image: {
     // options
-  }
+  },
 })
