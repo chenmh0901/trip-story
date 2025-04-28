@@ -1,96 +1,35 @@
 <script setup lang="ts">
+import { categories, posts } from './constant'
 definePageMeta({
   layout: 'base',
 })
 
-interface Category {
+export interface Category {
   id: string
   name: string
 }
 
 const selectedCategory = ref('all')
 
-const categories: Category[] = [
-  { id: 'all', name: '全部' },
-  { id: 'food', name: '美食' },
-  { id: 'scenery', name: '风景' },
-  { id: 'culture', name: '文化' },
-  { id: 'shopping', name: '购物' },
-  { id: 'hotel', name: '住宿' },
-  { id: 'transportation', name: '交通' },
-]
-
-const posts = [
-  {
-    id: 1,
-    title: '成都三日游｜探店必吃美食清单',
-    cover: '/images/posts/guangxi.png',
-    description: '整理了成都最地道的美食，从早餐到夜宵，承包你的整个行程',
-    likes: 2341,
-    comments: 156,
-    author: {
-      name: '美食探店家',
-      avatar: '/images/avatars/user1.png',
-    },
-    tags: ['成都', '美食', '探店'],
-  },
-  {
-    id: 2,
-    title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
-    cover: '/images/posts/kyoto.png',
-    description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
-    likes: 1892,
-    comments: 89,
-    author: {
-      name: '摄影师阿杰',
-      avatar: '/images/avatars/user2.png',
-    },
-    tags: ['香港', '摄影', '风景'],
-  },
-  {
-    id: 3,
-    title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
-    cover: '/images/posts/kyoto.png',
-    description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
-    likes: 1892,
-    comments: 89,
-    author: {
-      name: '摄影师阿杰',
-      avatar: '/images/avatars/user2.png',
-    },
-    tags: ['香港', '摄影', '风景'],
-  },
-  {
-    id: 4,
-    title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
-    cover: '/images/posts/kyoto.png',
-    description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
-    likes: 1892,
-    comments: 89,
-    author: {
-      name: '摄影师阿杰',
-      avatar: '/images/avatars/user2.png',
-    },
-    tags: ['香港', '摄影', '风景'],
-  },
-  {
-    id: 5,
-    title: '香港维多利亚港｜最佳拍摄时间和机位推荐',
-    cover: '/images/posts/kyoto.png',
-    description: '维多利亚港日落到夜景的完美拍摄攻略，收藏了各个角度的取景位置',
-    likes: 1892,
-    comments: 89,
-    author: {
-      name: '摄影师阿杰',
-      avatar: '/images/avatars/user2.png',
-    },
-    tags: ['香港', '摄影', '风景'],
-  },
-]
-
 const setCategory = (id: string) => {
   selectedCategory.value = id
 }
+
+const hotSpots = [
+  { name: 'Shanghai', image: '/images/hotspots/shanghai.jpg' },
+  { name: 'Beijing', image: '/images/hotspots/beijing.jpg' },
+  { name: 'Hong Kong', image: '/images/hotspots/hongkong.jpg' },
+  { name: 'Macau', image: '/images/hotspots/macau.jpg' },
+  { name: 'Guangzhou', image: '/images/hotspots/guangzhou.jpg' },
+  { name: 'Chongqing', image: '/images/hotspots/chongqing.jpg' },
+  { name: 'Chengdu', image: '/images/hotspots/chengdu.jpg' },
+  { name: 'Shenzhen', image: '/images/hotspots/shenzhen.jpg' },
+  { name: "Xi'an", image: '/images/hotspots/xian.jpg' },
+  { name: 'Guilin', image: '/images/hotspots/guilin.jpg' },
+  { name: 'Qingdao', image: '/images/hotspots/qingdao.jpg' },
+  { name: 'Nanjing', image: '/images/hotspots/nanjing.jpg' },
+  { name: 'Zhangjiajie', image: '/images/hotspots/zhangjiajie.jpg' },
+]
 </script>
 
 <template>
@@ -104,7 +43,7 @@ const setCategory = (id: string) => {
             v-for="cat in categories"
             :key="cat.id"
             class="px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors"
-            :class="selectedCategory === cat.id ? 'bg-[#3B82F6] text-white' : 'bg-gray-100 hover:bg-gray-200'"
+            :class="selectedCategory === cat.id ? 'bg-[#3B82F6] text-white' : 'bg-gray-00 text-black hover:bg-gray-200'"
             @click="setCategory(cat.id)"
           >
             {{ cat.name }}
@@ -126,7 +65,7 @@ const setCategory = (id: string) => {
           <!-- 内容区 -->
           <div class="p-3">
             <!-- 标题 -->
-            <h3 class="text-base font-medium line-clamp-2 mb-2">
+            <h3 class="text-base font-medium line-clamp-2 mb-2 text-black">
               {{ post.title }}
             </h3>
 
@@ -167,12 +106,27 @@ const setCategory = (id: string) => {
 
       <!-- 加载更多 -->
       <div class="text-center mt-8">
-        <UButton variant="outline" color="gray"> 加载更多 </UButton>
+        <UButton variant="outline"> 加载更多 </UButton>
       </div>
     </div>
 
     <!-- 悬浮发布按钮 -->
     <button class="fixed right-8 bottom-8 rounded-full w-14 h-14 shadow-lg" color="primary" icon="i-ph-plus" />
+
+    <section class="max-w-5xl mx-auto py-12 px-4">
+      <h2 class="text-3xl font-bold mb-8 text-gray-900">热门景点推荐</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div v-for="spot in hotSpots" :key="spot.name" class="relative rounded-2xl overflow-hidden shadow-md group cursor-pointer transition-transform hover:-translate-y-1">
+          <img :src="spot.image" :alt="spot.name" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div class="absolute bottom-4 left-0 w-full flex justify-center">
+            <span class="text-white text-xl font-extrabold drop-shadow-lg tracking-wide">
+              {{ spot.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 

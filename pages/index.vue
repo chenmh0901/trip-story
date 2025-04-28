@@ -1,103 +1,8 @@
 <script setup lang="ts">
+import { hotDestinations, featuredStories, travelInspirations } from './constant'
 definePageMeta({
   layout: 'base',
 })
-
-// 热门目的地
-const hotDestinations = [
-  {
-    name: '上海',
-    image: '~/assets/images/destinations/shanghai.png',
-    description: '现代与传统交融的国际大都市，感受东方明珠的魅力',
-    visits: '2,435',
-    link: '/destinations/shanghai',
-  },
-  {
-    name: '云南',
-    image: '~/assets/images/destinations/yunnan.png',
-    description: '壮丽的自然风光与多彩的民族文化交相辉映',
-    visits: '3,127',
-    link: '/destinations/yunnan',
-  },
-  {
-    name: '西藏',
-    image: '~/assets/images/destinations/tibet.png',
-    description: '神秘的高原圣地，体验独特的藏族文化与自然景观',
-    visits: '1,836',
-    link: '/destinations/tibet',
-  },
-  {
-    name: '广西',
-    image: '~/assets/images/destinations/guangxi.png',
-    description: '山水如画的自然景观，体验独特的喀斯特地貌',
-    visits: '2,945',
-    link: '/destinations/guangxi',
-  },
-]
-
-// 精选游记
-const featuredStories = [
-  {
-    title: '京都赏枫之旅',
-    image: '/images/destinations/kyoto.png',
-    author: {
-      avatar: '/images/avatars/user1.png',
-      name: '旅行者小王',
-    },
-    date: '2024.01.15',
-    likes: 156,
-    comments: 42,
-    shares: 76,
-  },
-  {
-    title: '马尔代夫的碧海蓝天',
-    image: '/assets/images/destinations/maldives.png',
-    author: {
-      avatar: '~/assets/images/avatars/user2.png',
-      name: '海岛控',
-    },
-    date: '2024.01.12',
-    likes: 389,
-    comments: 76,
-    shares: 93,
-  },
-  {
-    title: '阿尔卑斯山脉滑雪之旅',
-    image: '~/assets/images/destinations/alps.png',
-    author: {
-      avatar: '~/assets/images/avatars/user3.png',
-      name: '雪季漫游者',
-    },
-    date: '2024.01.30',
-    likes: 245,
-    comments: 145,
-    shares: 58,
-  },
-]
-
-// 旅行灵感
-const travelInspirations = [
-  {
-    icon: 'i-ph-mountains',
-    title: '自然探索',
-    description: '探索大自然的鬼斧神工，感受山川的壮美',
-  },
-  {
-    icon: 'i-ph-chat-circle',
-    title: '深度之旅',
-    description: '走进当地人的生活，体验不一样的文化',
-  },
-  {
-    icon: 'i-ph-buildings',
-    title: '文化体验',
-    description: '深入人文景观，感受历史文化的魅力',
-  },
-  {
-    icon: 'i-ph-tree',
-    title: '度假休闲',
-    description: '享受悠闲时光，远离都市的喧嚣',
-  },
-]
 </script>
 
 <template>
@@ -124,7 +29,7 @@ const travelInspirations = [
         <h2 class="text-3xl font-bold mb-8">热门目的地</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <NuxtLink v-for="dest in hotDestinations" :key="dest.name" :to="dest.link" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-            <img :src="dest.image" :alt="dest.name" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
+            <NuxtImg :src="dest.image" :alt="dest.name" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
               <div class="absolute bottom-0 p-6">
                 <h3 class="text-2xl font-bold text-white mb-2">{{ dest.name }}</h3>
@@ -154,7 +59,7 @@ const travelInspirations = [
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="story in featuredStories" :key="story.title" class="bg-gray-800 rounded-xl overflow-hidden group">
             <div class="relative overflow-hidden">
-              <img :src="story.image" :alt="story.title" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500" />
+              <NuxtImg :src="story.image" :alt="story.title" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
             <div class="p-6">
               <div class="flex items-center mb-4">

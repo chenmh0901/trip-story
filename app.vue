@@ -13,6 +13,15 @@ body {
   overflow-y: scroll;
 }
 
+.dark-mode body {
+  background-color: #091a28;
+  color: #ebf4f1;
+}
+.light-mode body {
+  background-color: #f1e7d0;
+  color: #433422;
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: all 0.22s ease;

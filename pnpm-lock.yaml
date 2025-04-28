@@ -38,6 +38,9 @@ importers:
       '@vueuse/core':
         specifier: latest
         version: 13.1.0(vue@3.5.13(typescript@5.8.3))
+      browser-image-compression:
+        specifier: ^2.0.2
+        version: 2.0.2
       dayjs:
         specifier: latest
         version: 1.11.13
@@ -2227,6 +2230,9 @@ packages:
 
   brotli@1.3.3:
     resolution: {integrity: sha512-oTKjJdShmDuGW94SyyaoQvAjf30dZaHnjJ8uAF+u2/vGJkJbJPJAT1gDiOJP5v1Zb6f9KEyW/1HpuaWIXtGHPg==, tarball: https://registry.npmmirror.com/brotli/-/brotli-1.3.3.tgz}
+
+  browser-image-compression@2.0.2:
+    resolution: {integrity: sha512-pBLlQyUf6yB8SmmngrcOw3EoS4RpQ1BcylI3T9Yqn7+4nrQTXJD4sJDe5ODnJdrvNMaio5OicFo75rDyJD2Ucw==, tarball: https://registry.npmmirror.com/browser-image-compression/-/browser-image-compression-2.0.2.tgz}
 
   browserslist@4.24.4:
     resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==, tarball: https://registry.npmmirror.com/browserslist/-/browserslist-4.24.4.tgz}
@@ -5342,6 +5348,9 @@ packages:
     resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==, tarball: https://registry.npmmirror.com/uuid/-/uuid-11.1.0.tgz}
     hasBin: true
 
+  uzip@0.20201231.0:
+    resolution: {integrity: sha512-OZeJfZP+R0z9D6TmBgLq2LHzSSptGMGDGigGiEe0pr8UBe/7fdflgHlHBNDASTXB5jnFuxHpNaJywSg8YFeGng==, tarball: https://registry.npmmirror.com/uzip/-/uzip-0.20201231.0.tgz}
+
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==, tarball: https://registry.npmmirror.com/validate-npm-package-license/-/validate-npm-package-license-3.0.4.tgz}
 
@@ -8133,6 +8142,10 @@ snapshots:
   brotli@1.3.3:
     dependencies:
       base64-js: 1.5.1
+
+  browser-image-compression@2.0.2:
+    dependencies:
+      uzip: 0.20201231.0
 
   browserslist@4.24.4:
     dependencies:
@@ -11661,6 +11674,8 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   uuid@11.1.0: {}
+
+  uzip@0.20201231.0: {}
 
   validate-npm-package-license@3.0.4:
     dependencies:
