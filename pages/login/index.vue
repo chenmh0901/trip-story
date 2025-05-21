@@ -11,6 +11,18 @@ const countdown = ref(60)
 const timer = ref<number | null>(null)
 const currentVerifyCode = ref('') // 存储当前生成的验证码
 
+const loginType = ref<'phone' | 'account'>('phone')
+
+const { login, register } = useUserStore()
+
+const ADMIN = {
+  id: 999,
+  name: 'admin',
+  avatar: '/images/avatars/admin.png',
+  password: 'admin123',
+  phone: '13606659286',
+}
+
 // 错误提示
 const errors = ref({
   phone: '',
@@ -124,27 +136,52 @@ const validateVerifyCode = () => {
 }
 
 // 修改登录函数
-const handleLogin = () => {
-  // 验证所有字段
-  const isPhoneValid = validatePhone()
-  const isVerifyCodeValid = validateVerifyCode()
+const handleLogin = async () => {
+  if (loginType.value === 'phone') {
+    // 手机号登录
+    const isPhoneValid = validatePhone()
+    const isVerifyCodeValid = validateVerifyCode()
 
-  if (!isPhoneValid || !isVerifyCodeValid) {
-    return
+    if (!isPhoneValid || !isVerifyCodeValid) {
+      return
+    }
+
+    // 检查是否是管理员账号
+    if (phone.value === ADMIN.phone) {
+      login({
+        id: ADMIN.id,
+        name: ADMIN.name,
+        avatar: ADMIN.avatar,
+        phone: ADMIN.phone,
+        password: ADMIN.password,
+      })
+      navigateTo('/')
+      return
+    }
+
+    navigateTo('/')
+  } else {
+    // 账号密码登录
+    if (!username.value || !password.value) {
+      alert('请输入账号或密码')
+      return
+    }
+
+    // 检查是否是管理员账号
+    if (username.value === ADMIN.name && password.value === ADMIN.password) {
+      login({
+        id: ADMIN.id,
+        name: ADMIN.name,
+        avatar: ADMIN.avatar,
+        phone: ADMIN.phone,
+        password: ADMIN.password,
+      })
+      navigateTo('/')
+      return
+    }
+
+    alert('用户不存在')
   }
-
-  // 模拟登录成功
-  console.log('登录成功:', {
-    phone: phone.value,
-    verifyCode: verifyCode.value,
-  })
-
-  // 存储登录状态（可以存储在 localStorage 中）
-  localStorage.setItem('isLoggedIn', 'true')
-  localStorage.setItem('userPhone', phone.value)
-
-  // 登录成功后跳转
-  navigateTo('/')
 }
 
 // 修改注册函数
@@ -161,24 +198,20 @@ const handleRegister = () => {
 
   // 模拟注册成功，存储用户信息
   const userInfo = {
-    username: username.value,
+    id: 0,
+    name: username.value,
+    avatar: '',
     phone: phone.value,
     password: password.value, // 实际项目中不建议明文存储密码
   }
 
   // 存储用户信息（这里仅作演示）
-  localStorage.setItem('userInfo', JSON.stringify(userInfo))
+  register(userInfo)
 
   // 提示注册成功
   alert('注册成功！')
 
-  // 注册成功后自动切换到登录
-  isLogin.value = true
-
-  // 清空表单
-  username.value = ''
-  password.value = ''
-  verifyCode.value = ''
+  navigateTo('/')
 }
 
 // 组件卸载时清除定时器
@@ -193,8 +226,23 @@ onUnmounted(() => {
   <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <!-- 语言切换按钮 -->
     <div class="absolute top-4 right-4 flex gap-2">
-      <button v-for="locale in locales" :key="locale.code" class="px-4 py-2 bg-gray-200 text-black hover:bg-gray-300 rounded-lg text-sm transition-colors" @click="setLocale(locale.code)">
+      <button
+        v-for="locale in locales"
+        :key="locale.code"
+        class="cursor-pointer px-4 py-2 bg-gray-200 text-black hover:bg-gray-300 rounded-lg text-sm transition-colors"
+        @click="setLocale(locale.code)"
+      >
         {{ locale.code === 'zh' ? '中文' : 'English' }}
+      </button>
+      <button
+        class="cursor-pointer px-4 py-2 bg-gray-200 text-black hover:bg-gray-300 rounded-lg text-sm transition-colors"
+        @click="
+          () => {
+            navigateTo('/')
+          }
+        "
+      >
+        首页
       </button>
     </div>
 
@@ -209,82 +257,132 @@ onUnmounted(() => {
         </p>
       </div>
 
+      <!-- 登录方式 -->
+      <div v-if="isLogin" class="flex justify-center gap-3">
+        <span :class="loginType === 'phone' ? 'text-blue-600 font-bold' : 'text-gray-500 cursor-pointer'" @click="loginType = 'phone'">{{ t('auth.phone_login') }}</span>
+        |
+        <span :class="loginType === 'account' ? 'text-blue-600 font-bold' : 'text-gray-500 cursor-pointer'" @click="loginType = 'account'">{{ t('auth.account_login') }}</span>
+      </div>
+
       <!-- 表单 -->
       <div class="mt-8 space-y-6">
         <div class="rounded-md shadow-sm space-y-4">
-          <!-- 用户名输入框（仅在注册时显示） -->
-          <div v-if="!isLogin" class="space-y-1">
-            <label for="username" class="sr-only">用户名</label>
-            <input
-              id="username"
-              v-model="username"
-              type="text"
-              required
-              class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              :class="{ 'border-red-500': errors.username }"
-              :placeholder="t('auth.username')"
-              @blur="validateUsername"
-            />
-            <p v-if="errors.username" class="text-red-500 text-xs">{{ t(errors.username) }}</p>
-          </div>
-
-          <!-- 手机号输入框 -->
-          <div class="space-y-1">
-            <label for="phone" class="sr-only">手机号</label>
-            <input
-              id="phone"
-              v-model="phone"
-              type="tel"
-              required
-              class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              :class="{ 'border-red-500': errors.phone }"
-              :placeholder="t('auth.phone')"
-              @blur="validatePhone"
-            />
-            <p v-if="errors.phone" class="text-red-500 text-xs">{{ t(errors.phone) }}</p>
-          </div>
-
-          <!-- 密码输入框（仅在注册时显示） -->
-          <div v-if="!isLogin" class="space-y-1">
-            <label for="password" class="sr-only">密码</label>
-            <input
-              id="password"
-              v-model="password"
-              type="password"
-              required
-              class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              :class="{ 'border-red-500': errors.password }"
-              :placeholder="t('auth.password')"
-              @blur="validatePassword"
-            />
-            <p v-if="errors.password" class="text-red-500 text-xs">{{ t(errors.password) }}</p>
-          </div>
-
-          <!-- 验证码输入框 -->
-          <div class="space-y-1">
-            <div class="flex gap-2">
-              <div class="flex-1">
+          <template v-if="isLogin">
+            <template v-if="loginType === 'phone'">
+              <!-- 手机号输入框 -->
+              <div class="space-y-1">
                 <input
-                  v-model="verifyCode"
+                  v-model="phone"
+                  type="tel"
+                  required
+                  class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                  :class="{ 'border-red-500': errors.phone }"
+                  :placeholder="t('auth.phone')"
+                  @blur="validatePhone"
+                />
+                <p v-if="errors.phone" class="text-red-500 text-xs">{{ t(errors.phone) }}</p>
+              </div>
+              <!-- 验证码输入框 -->
+              <div class="space-y-1">
+                <div class="flex gap-2">
+                  <div class="flex-1">
+                    <input
+                      v-model="verifyCode"
+                      type="text"
+                      required
+                      class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                      :class="{ 'border-red-500': errors.verifyCode }"
+                      :placeholder="t('auth.verify_code')"
+                      @blur="validateVerifyCode"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    :disabled="!!timer"
+                    class="px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    @click="sendVerifyCode"
+                  >
+                    {{ timer ? t('auth.retry_after', { count: countdown }) : t('auth.get_code') }}
+                  </button>
+                </div>
+                <p v-if="errors.verifyCode" class="text-red-500 text-xs">{{ t(errors.verifyCode) }}</p>
+              </div>
+            </template>
+            <!-- 用户名密码登录 -->
+            <template v-else>
+              <div class="space-y-1">
+                <input
+                  v-model="username"
                   type="text"
                   required
                   class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  :class="{ 'border-red-500': errors.verifyCode }"
-                  :placeholder="t('auth.verify_code')"
-                  @blur="validateVerifyCode"
+                  :class="{ 'border-red-500': errors.username }"
+                  :placeholder="t('auth.username')"
                 />
+                <p v-if="errors.username" class="text-red-500 text-xs">{{ t(errors.username) }}</p>
               </div>
-              <button
-                type="button"
-                :disabled="!!timer"
-                class="px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                @click="sendVerifyCode"
-              >
-                {{ timer ? t('auth.retry_after', { count: countdown }) : t('auth.get_code') }}
-              </button>
+              <div class="space-y-1">
+                <input
+                  v-model="password"
+                  type="password"
+                  required
+                  class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                  :class="{ 'border-red-500': errors.password }"
+                  :placeholder="t('auth.password')"
+                />
+                <p v-if="errors.password" class="text-red-500 text-xs">{{ t(errors.password) }}</p>
+              </div>
+            </template>
+          </template>
+          <template v-else>
+            <!-- 用户名输入框（仅在注册时显示） -->
+            <div class="space-y-1">
+              <label for="username" class="sr-only">用户名</label>
+              <input
+                id="username"
+                v-model="username"
+                type="text"
+                required
+                class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                :class="{ 'border-red-500': errors.username }"
+                :placeholder="t('auth.username')"
+                @blur="validateUsername"
+              />
+              <p v-if="errors.username" class="text-red-500 text-xs">{{ t(errors.username) }}</p>
             </div>
-            <p v-if="errors.verifyCode" class="text-red-500 text-xs">{{ t(errors.verifyCode) }}</p>
-          </div>
+
+            <!-- 手机号输入框 -->
+            <div class="space-y-1">
+              <label for="phone" class="sr-only">手机号</label>
+              <input
+                id="phone"
+                v-model="phone"
+                type="tel"
+                required
+                class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                :class="{ 'border-red-500': errors.phone }"
+                :placeholder="t('auth.phone')"
+                @blur="validatePhone"
+              />
+              <p v-if="errors.phone" class="text-red-500 text-xs">{{ t(errors.phone) }}</p>
+            </div>
+
+            <!-- 密码输入框（仅在注册时显示） -->
+            <div class="space-y-1">
+              <label for="password" class="sr-only">密码</label>
+              <input
+                id="password"
+                v-model="password"
+                type="password"
+                required
+                class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                :class="{ 'border-red-500': errors.password }"
+                :placeholder="t('auth.password')"
+                @blur="validatePassword"
+              />
+              <p v-if="errors.password" class="text-red-500 text-xs">{{ t(errors.password) }}</p>
+            </div>
+          </template>
         </div>
 
         <!-- 提交按钮 -->

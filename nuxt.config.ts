@@ -10,11 +10,11 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxtjs/i18n',
     '@nuxt/icon',
-    '@nuxt/fonts'
+    '@pinia/nuxt',
   ],
   css: ['~/assets/css/main.css'],
   ui: {
-    colorMode: true,
+    colorMode: true
   },
   i18n: {
     defaultLocale: 'zh',

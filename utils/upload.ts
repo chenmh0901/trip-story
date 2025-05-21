@@ -2,7 +2,7 @@ import imageCompression from 'browser-image-compression';
 import { uuid } from './uuid';
 
 
-const assetsOrigin = 'http://cdn.niniix.com';
+const assetsOrigin = 'http://swjtdhcuz.hd-bkt.clouddn.com';
 const uploadUrl = 'https://upload.qiniup.com';
 const imageTokenApiName = 'http://localhost:3001/upload-token';
 

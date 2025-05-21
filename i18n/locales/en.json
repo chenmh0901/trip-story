@@ -1,9 +1,11 @@
 {
   "home": "Home",
-  "Community": "Community",
-  "Posts": "Posts",
+  "destinations": "Destinations",
+  "posts": "Posts",
   "auth": {
     "welcome_back": "Welcome Back",
+    "phone_login":"login with phone",
+    "account_login":"login with account",
     "create_account": "Create Account",
     "login_account": "Login to your account",
     "start_journey": "Start your travel story",

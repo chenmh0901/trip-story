@@ -1,8 +1,102 @@
 <script setup lang="ts">
-import { hotDestinations, featuredStories, travelInspirations } from './constant'
 definePageMeta({
   layout: 'base',
 })
+
+const hotDestinations = [
+  {
+    name: '上海',
+    image: '/images/public/shanghai.png',
+    description: '现代与传统交融的国际大都市，感受东方明珠的魅力',
+    visits: '2,435',
+    link: '/public/shanghai',
+  },
+  {
+    name: '云南',
+    image: '/images/public/yunnan.png',
+    description: '壮丽的自然风光与多彩的民族文化交相辉映',
+    visits: '3,127',
+    link: '/public/yunnan',
+  },
+  {
+    name: '西藏',
+    image: '/images/public/tibet.png',
+    description: '神秘的高原圣地，体验独特的藏族文化与自然景观',
+    visits: '1,836',
+    link: '/public/tibet',
+  },
+  {
+    name: '广西',
+    image: '/images/public/guangxi.png',
+    description: '山水如画的自然景观，体验独特的喀斯特地貌',
+    visits: '2,945',
+    link: '/public/guangxi',
+  },
+]
+
+// 精选游记
+const featuredStories = [
+  {
+    title: '京都赏枫之旅',
+    image: '/images/public/kyoto.png',
+    author: {
+      avatar: '/images/avatars/user1.png',
+      name: '旅行者小王',
+    },
+    date: '2024.01.15',
+    likes: 156,
+    comments: 42,
+    shares: 76,
+  },
+  {
+    title: '马尔代夫的碧海蓝天',
+    image: '/images/public/maldives.png',
+    author: {
+      avatar: '/images/avatars/user2.png',
+      name: '海岛控',
+    },
+    date: '2024.01.12',
+    likes: 389,
+    comments: 76,
+    shares: 93,
+  },
+  {
+    title: '阿尔卑斯山脉滑雪之旅',
+    image: '/images/public/alps.png',
+    author: {
+      avatar: '/images/avatars/user3.png',
+      name: '雪季漫游者',
+    },
+    date: '2024.01.30',
+    likes: 245,
+    comments: 145,
+    shares: 58,
+  },
+]
+
+// 旅行灵感
+const travelInspirations = [
+  {
+    icon: 'i-ph-mountains',
+    title: '自然探索',
+    description: '探索大自然的鬼斧神工，感受山川的壮美',
+  },
+  {
+    icon: 'i-ph-chat-circle',
+    title: '深度之旅',
+    description: '走进当地人的生活，体验不一样的文化',
+  },
+  {
+    icon: 'i-ph-buildings',
+    title: '文化体验',
+    description: '深入人文景观，感受历史文化的魅力',
+  },
+  {
+    icon: 'i-ph-tree',
+    title: '度假休闲',
+    description: '享受悠闲时光，远离都市的喧嚣',
+  },
+]
 </script>
 
 <template>
@@ -17,8 +111,12 @@ definePageMeta({
         <h1 class="text-6xl md:text-7xl font-bold mb-6">探索世界的每个角落</h1>
         <p class="text-xl md:text-2xl mb-8">记录你的旅行故事，分享精彩瞬间，让更多人感受旅行的魅力</p>
         <div class="flex gap-4">
-          <button class="bg-[#3B82F6] text-white w-40 h-12 rounded-xl">开始探索</button>
-          <button class="bg-[#FFFFFF] text-black w-40 h-12 rounded-xl">分享旅记</button>
+          <NuxtLink to="/destinations">
+            <button class="bg-[#3B82F6] text-white w-40 h-12 rounded-xl hover:bg-[#3B82F6]/80 cursor-pointer">开始探索</button>
+          </NuxtLink>
+          <NuxtLink to="/posts">
+            <button class="bg-[#FFFFFF] text-black w-40 h-12 rounded-xl hover:bg-[#FFFFFF]/80 cursor-pointer">分享旅记</button>
+          </NuxtLink>
         </div>
       </div>
     </section>
@@ -28,7 +126,7 @@ definePageMeta({
       <div class="container">
         <h2 class="text-3xl font-bold mb-8">热门目的地</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <NuxtLink v-for="dest in hotDestinations" :key="dest.name" :to="dest.link" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+          <NuxtLink v-for="dest in hotDestinations" :key="dest.name" to="/destinations" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
             <NuxtImg :src="dest.image" :alt="dest.name" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
               <div class="absolute bottom-0 p-6">
@@ -53,11 +151,13 @@ definePageMeta({
           <div class="flex gap-2">
             <button class="btn text-black">最新发布</button>
             <button class="btn text-black">最多浏览</button>
-            <button class="btn text-black" active>查看更多</button>
+            <NuxtLink to="/posts">
+              <button class="btn text-black hover:cursor-pointer" active>查看更多</button>
+            </NuxtLink>
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="story in featuredStories" :key="story.title" class="bg-gray-800 rounded-xl overflow-hidden group">
+          <NuxtLink v-for="story in featuredStories" :key="story.title" to="/posts" class="bg-gray-800 rounded-xl overflow-hidden group">
             <div class="relative overflow-hidden">
               <NuxtImg :src="story.image" :alt="story.title" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
@@ -76,7 +176,7 @@ definePageMeta({
                 <span class="flex items-center gap-1"><Icon name="i-ph-share" />{{ story.shares }}</span>
               </div>
             </div>
-          </div>
+          </NuxtLink>
         </div>
       </div>
     </section>

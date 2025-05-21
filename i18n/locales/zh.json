@@ -1,10 +1,12 @@
 {
   "home": "首页",
-  "Community": "社区",
-  "Posts": "日记",
+  "destinations": "热门地点",
+  "posts": "日记",
   "auth": {
     "welcome_back": "欢迎回来",
     "create_account": "创建账号",
+    "phone_login":"使用手机号登录",
+    "account_login":"使用账号登录",
     "login_account": "登录你的账号",
     "start_journey": "开始你的旅行故事",
     "username": "用户名",

@@ -1,27 +1,34 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Post } from '~/types/post'
 
-// 日记数据结构
-interface PostData {
-  title: string
-  content: string
-  images: string[]
-  locations: string[]
-  startDate: string
-  endDate: string
-  enableLocation: boolean
-}
+const emit = defineEmits(['upload', 'saveDraft'])
 
 // 初始化数据
-const postData = ref<PostData>({
+const postData = ref<Post>({
   title: '',
+  description: '',
   content: '',
   images: [],
-  locations: [],
-  startDate: '',
-  endDate: '',
-  enableLocation: false,
+  tags: [],
+  location: '',
+  likes: 0,
+  author: {
+    id: 1,
+    avatar: '',
+    name: '',
+    password: '',
+    phone: '',
+  },
+  comments: [],
+  createdAt: '',
+  updatedAt: '',
+  category: '',
+  cover: '',
+  id: '',
 })
+
+const enableLocation = ref(false)
 
 // 地点列表
 const locationInput = ref('')
@@ -35,7 +42,7 @@ const handleImageUpload = (event: Event) => {
     const reader = new FileReader()
     reader.onload = (e) => {
       if (e.target?.result) {
-        postData.value.images.push(e.target.result as string)
+        postData.value.images?.push(e.target.result as string)
       }
     }
     reader.readAsDataURL(file)
@@ -43,34 +50,48 @@ const handleImageUpload = (event: Event) => {
 }
 
 // 添加地点
-const addLocation = () => {
+const addTags = () => {
   if (locationInput.value.trim()) {
-    postData.value.locations.push(locationInput.value)
+    postData.value.tags.push(locationInput.value)
     locationInput.value = ''
   }
 }
 
 // 移除地点
-const removeLocation = (index: number) => {
-  postData.value.locations.splice(index, 1)
+const removeTag = (index: number) => {
+  postData.value.tags.splice(index, 1)
 }
 
 // 移除图片
 const removeImage = (index: number) => {
-  postData.value.images.splice(index, 1)
+  postData.value.images?.splice(index, 1)
 }
+
+const { user } = useUserStore()
+const { posts, draft } = usePostsStore()
 
 // 发布日记
 const publishPost = () => {
-  // 这里添加实际的发布逻辑
   console.log('Publishing post:', postData.value)
+  postData.value.cover = postData.value.images?.[0] ?? ''
+  postData.value.author = user
+  postData.value.createdAt = formatDate()
+  postData.value.updatedAt = formatDate()
+  postData.value.id = posts.length + 1
+  emit('upload', postData.value)
 }
 
 // 保存草稿
 const saveDraft = () => {
-  // 这里添加保存草稿逻辑
   console.log('Saving draft:', postData.value)
+  emit('saveDraft', postData.value)
 }
+
+onMounted(() => {
+  if (draft) {
+    postData.value = draft
+  }
+})
 </script>
 
 <template>
@@ -78,19 +99,25 @@ const saveDraft = () => {
     <!-- 标题输入 -->
     <input v-model="postData.title" type="text" class="title-input" placeholder="请输入一个吸引人的标题" />
 
-    <!-- 富文本编辑器工具栏 -->
-    <div class="editor-toolbar">
-      <button class="toolbar-btn"><Icon name="i-ph-text-b" /></button>
-      <button class="toolbar-btn"><Icon name="i-ph-text-italic" /></button>
-      <button class="toolbar-btn"><Icon name="i-ph-text-underline" /></button>
-      <button class="toolbar-btn"><Icon name="i-ph-list-bullets" /></button>
-      <button class="toolbar-btn"><Icon name="i-ph-list-numbers" /></button>
-      <button class="toolbar-btn"><Icon name="i-ph-link" /></button>
-      <button class="toolbar-btn"><Icon name="i-ph-image" /></button>
-    </div>
+    <!-- 描述输入 -->
+    <textarea v-model="postData.description" type="text" class="desc-textarea" placeholder="请简单描述一下你的日记" />
 
-    <!-- 内容编辑区 -->
-    <textarea v-model="postData.content" class="content-editor" placeholder="开始记录你的精彩旅程..." />
+    <!-- 富文本编辑器 -->
+    <section class="mt-4">
+      <!-- 富文本编辑器工具栏 -->
+      <div class="editor-toolbar">
+        <button class="toolbar-btn"><Icon name="i-ph-text-b" /></button>
+        <button class="toolbar-btn"><Icon name="i-ph-text-italic" /></button>
+        <button class="toolbar-btn"><Icon name="i-ph-text-underline" /></button>
+        <button class="toolbar-btn"><Icon name="i-ph-list-bullets" /></button>
+        <button class="toolbar-btn"><Icon name="i-ph-list-numbers" /></button>
+        <button class="toolbar-btn"><Icon name="i-ph-link" /></button>
+        <button class="toolbar-btn"><Icon name="i-ph-image" /></button>
+      </div>
+
+      <!-- 内容编辑区 -->
+      <textarea v-model="postData.content" class="content-editor" placeholder="开始记录你的精彩旅程..." />
+    </section>
 
     <!-- 图片上传区 -->
     <div class="image-upload-section">
@@ -112,45 +139,43 @@ const saveDraft = () => {
       </div>
     </div>
 
-    <!-- 旅行地点 -->
-    <div class="location-section">
-      <h3 class="section-title">旅行地点</h3>
-      <div class="location-input-group">
-        <input v-model="locationInput" type="text" placeholder="添加地点标签" class="location-input" />
-        <button class="add-btn" @click="addLocation">添加</button>
+    <!-- 日记标签 -->
+    <div class="tags-section">
+      <h3 class="section-title">日记标签</h3>
+      <div class="tags-input-group">
+        <input v-model="locationInput" type="text" placeholder="添加日记标签" class="tags-input" />
+        <button class="add-btn" @click="addTags">添加</button>
       </div>
-      <div class="location-tags">
-        <span v-for="(location, index) in postData.locations" :key="index" class="location-tag">
-          {{ location }}
-          <button class="remove-tag" @click="removeLocation(index)">
+      <div class="tags-tags">
+        <span v-for="(tag, index) in postData.tags" :key="index" class="tags-item">
+          {{ tag }}
+          <button class="remove-tag" @click="removeTag(index)">
             <Icon name="i-ph-x" />
           </button>
         </span>
       </div>
     </div>
 
-    <!-- 旅行时间 -->
-    <div class="time-section">
-      <h3 class="section-title">旅行时间</h3>
-      <div class="date-picker-group">
-        <input v-model="postData.startDate" type="date" class="date-input" />
-        <span class="mx-2">至</span>
-        <input v-model="postData.endDate" type="date" class="date-input" />
+    <!-- 选择地点 -->
+    <section class="location-section">
+      <!-- 位置信息 -->
+      <div class="location-toggle">
+        <label class="toggle-switch">
+          <input v-model="enableLocation" type="checkbox" />
+          <span class="slider" />
+        </label>
+        <span class="ml-2">开启位置信息</span>
+        <span v-if="enableLocation" class="ml-2">杭州</span>
       </div>
-    </div>
 
-    <!-- 位置信息 -->
-    <div class="location-toggle">
-      <label class="toggle-switch">
-        <input v-model="postData.enableLocation" type="checkbox" />
-        <span class="slider" />
-      </label>
-      <span class="ml-2">开启位置信息</span>
-    </div>
+      <!-- 旅行目的地 -->
+      <div class="destination-input">
+        <input v-model="postData.location" type="text" placeholder="请输入旅行目的地" class="destination-input-box" />
+      </div>
+    </section>
 
     <!-- 操作按钮 -->
     <div class="action-buttons">
-      <button class="cancel-btn" @click="$emit('cancel')">取消</button>
       <button class="draft-btn" @click="saveDraft">保存草稿</button>
       <button class="publish-btn" @click="publishPost">发布日记</button>
     </div>
@@ -158,8 +183,10 @@ const saveDraft = () => {
 </template>
 
 <style lang="css" scoped>
-@import 'tailwindcss' .upload-post {
+@import 'tailwindcss';
+.upload-post {
   @apply max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-sm;
+  @apply overflow-y-auto;
 }
 
 .title-input {
@@ -208,7 +235,7 @@ const saveDraft = () => {
   }
 }
 
-.location-section {
+.tags-section {
   @apply mb-8;
 }
 
@@ -216,10 +243,10 @@ const saveDraft = () => {
   @apply text-lg font-medium mb-4;
 }
 
-.location-input-group {
+.tags-input-group {
   @apply flex gap-2 mb-4;
 
-  .location-input {
+  .tags-input {
     @apply flex-1 px-4 py-2 border rounded-lg;
   }
 
@@ -229,10 +256,10 @@ const saveDraft = () => {
   }
 }
 
-.location-tags {
+.tags-tags {
   @apply flex flex-wrap gap-2;
 
-  .location-tag {
+  .tags-item {
     @apply flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full;
 
     .remove-tag {
@@ -301,5 +328,30 @@ const saveDraft = () => {
   .publish-btn {
     @apply bg-blue-500 text-white hover:bg-blue-600;
   }
+}
+
+.desc-textarea {
+  @apply w-full text-base mb-4 p-3 rounded-lg bg-gray-50 border-none outline-none resize-none;
+  @apply placeholder:text-gray-400;
+  min-height: 48px;
+  line-height: 1.7;
+  transition: box-shadow 0.2s;
+}
+.desc-textarea:focus {
+  @apply bg-white shadow;
+}
+.location-section {
+  @apply flex items-center gap-6;
+}
+
+.destination-input {
+  @apply mb-8;
+}
+
+.destination-input-box {
+  @apply w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 outline-none;
+  @apply placeholder:text-gray-400;
+  @apply focus:bg-white focus:border-blue-400 focus:shadow;
+  transition: box-shadow 0.2s;
 }
 </style>

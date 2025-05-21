@@ -1,16 +1,16 @@
 <script setup lang="ts">
 const aboutLinks = [
-  { name: '公司介绍', link: '/about' },
-  { name: '加入我们', link: '/join' },
-  { name: '联系方式', link: '/contact' },
-  { name: '用户协议', link: '/terms' },
+  { name: '公司介绍', link: '/' },
+  { name: '加入我们', link: '/' },
+  { name: '联系方式', link: '/' },
+  { name: '用户协议', link: '/' },
 ]
 
 const helpLinks = [
-  { name: '新手指南', link: '/guide' },
-  { name: '常见问题', link: '/faq' },
-  { name: '意见反馈', link: '/feedback' },
-  { name: '隐私政策', link: '/privacy' },
+  { name: '新手指南', link: '/' },
+  { name: '常见问题', link: '/' },
+  { name: '意见反馈', link: '/' },
+  { name: '隐私政策', link: '/' },
 ]
 
 const socialLinks = [
