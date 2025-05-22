@@ -4,6 +4,5 @@
     <main class="pt-4">
       <slot />
     </main>
-    <ComFooter />
   </div>
 </template>

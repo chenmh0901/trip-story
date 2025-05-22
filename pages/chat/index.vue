@@ -2,7 +2,7 @@
 import { ref, watch, nextTick } from 'vue'
 
 definePageMeta({
-  layout: 'base',
+  layout: 'plain',
 })
 
 interface Message {
@@ -32,41 +32,46 @@ const sendMessage = async () => {
   inputMessage.value = ''
   isLoading.value = true
 
+  // 创建助手消息
+  const assistantMessage = {
+    id: messages.value.length + 1,
+    content: '',
+    type: 'assistant' as const,
+    timestamp: new Date().toLocaleTimeString(),
+  }
+  messages.value.push(assistantMessage)
+
   try {
-    const response = await $fetch<{
-      choices: Array<{
-        message: {
-          content: string
-        }
-      }>
-    }>('/api/chat', {
+    const response = await fetch('/api/chat', {
       method: 'POST',
-      body: {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         messages: [
           {
             role: 'user',
             content: userInput,
           },
         ],
-      },
+      }),
     })
 
-    const assistantMessage = {
-      id: messages.value.length + 1,
-      content: response.choices[0].message.content,
-      type: 'assistant' as const,
-      timestamp: new Date().toLocaleTimeString(),
-    }
+    if (!response.body) throw new Error('No response body')
 
-    messages.value.push(assistantMessage)
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder()
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      const text = decoder.decode(value)
+      assistantMessage.content += text
+    }
   } catch (error) {
     console.error('Error:', error)
-    messages.value.push({
-      id: messages.value.length + 1,
-      content: '抱歉，发生了错误。',
-      type: 'assistant',
-      timestamp: new Date().toLocaleTimeString(),
-    })
+    assistantMessage.content = '抱歉，发生了错误。'
   } finally {
     isLoading.value = false
   }
@@ -91,11 +96,15 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col bg-gray-100 items-center justify-center">
-    <div class="w-[1080px] h-[1200px] relative">
+  <div class="flex bg-gray-100 items-center justify-center" style="min-height: calc(100vh - 72px)">
+    <div class="w-[1080px] h-[800px] bg-white rounded-2xl shadow-lg flex flex-col relative">
       <!-- 聊天消息列表 -->
-      <div ref="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
-        <div v-for="message in messages" :key="message.id" :class="['max-w-[80%] rounded-lg p-4', message.type === 'user' ? 'ml-auto bg-blue-500 text-white' : 'mr-auto bg-white']">
+      <div ref="messagesContainer" class="overflow-y-auto p-6 space-y-4 flex-1">
+        <div
+          v-for="message in messages"
+          :key="message.id"
+          :class="['max-w-[80%] rounded-lg p-4 break-words', message.type === 'user' ? 'ml-auto bg-blue-500 text-white' : 'mr-auto bg-gray-100 text-gray-900']"
+        >
           <div class="text-sm">{{ message.content }}</div>
           <div :class="['text-xs mt-1', message.type === 'user' ? 'text-blue-100' : 'text-gray-500']">
             {{ message.timestamp }}
@@ -103,7 +112,7 @@ watch(
         </div>
 
         <!-- 加载状态指示器 -->
-        <div v-if="isLoading" class="mr-auto bg-white rounded-lg p-4 max-w-[80%]">
+        <div v-if="isLoading" class="mr-auto bg-gray-100 rounded-lg p-4 max-w-[80%]">
           <div class="flex space-x-2">
             <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
             <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s" />
@@ -113,8 +122,8 @@ watch(
       </div>
 
       <!-- 输入框区域 -->
-      <div class="border rounded-full border-gray-200 bg-white p-4 absolute bottom-0 left-0 right-0 mb-2">
-        <div class="flex space-x-4 max-w-4xl mx-auto">
+      <div class="border-t border-gray-200 bg-white p-4 h-[80px]">
+        <div class="flex space-x-4">
           <input
             v-model="inputMessage"
             type="text"
@@ -138,15 +147,13 @@ watch(
 
 <style scoped>
 /* 聊天整体背景和布局 */
-.flex-1 {
-  min-height: 0;
-}
 
-/* 消息气泡动画 */
+.break-words {
+  word-break: break-word;
+}
 .animate-bounce {
   animation: bounce 1s infinite;
 }
-
 @keyframes bounce {
   0%,
   100% {
@@ -156,7 +163,6 @@ watch(
     transform: translateY(-4px);
   }
 }
-
 /* 自定义滚动条样式 */
 ::-webkit-scrollbar {
   width: 8px;

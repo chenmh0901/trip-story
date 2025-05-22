@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'base',
+  layout: 'plain',
 })
 
 const route = useRoute()
@@ -51,7 +51,7 @@ const handleLikeClick = () => {
 </script>
 
 <template>
-  <div class="note-detail-page bg-gray-100 min-h-screen py-6">
+  <div class="note-detail-page bg-gray-100 py-6" style="min-height: calc(100vh - 72px)">
     <div class="max-w-3xl mx-auto bg-white rounded-xl shadow p-6">
       <!-- 返回与更多操作 -->
       <div class="flex items-center justify-between mb-4">
