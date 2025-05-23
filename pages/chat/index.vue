@@ -96,10 +96,10 @@ watch(
 </script>
 
 <template>
-  <div class="flex bg-gray-100 items-center justify-center" style="min-height: calc(100vh - 72px)">
-    <div class="w-[1080px] h-[800px] bg-white rounded-2xl shadow-lg flex flex-col relative">
+  <div class="flex bg-gray-100 items-center justify-center h-[88vh]">
+    <div class="w-[1080px] bg-white rounded-2xl shadow-lg flex flex-col relative max-h-screen" style="height: 80vh">
       <!-- 聊天消息列表 -->
-      <div ref="messagesContainer" class="overflow-y-auto p-6 space-y-4 flex-1">
+      <div ref="messagesContainer" class="p-6 space-y-4 flex-1">
         <div
           v-for="message in messages"
           :key="message.id"
@@ -147,7 +147,6 @@ watch(
 
 <style scoped>
 /* 聊天整体背景和布局 */
-
 .break-words {
   word-break: break-word;
 }
@@ -163,13 +162,8 @@ watch(
     transform: translateY(-4px);
   }
 }
-/* 自定义滚动条样式 */
+/* 移除滚动条样式 */
 ::-webkit-scrollbar {
-  width: 8px;
-  background: #f5f5f5;
-}
-::-webkit-scrollbar-thumb {
-  background: #e0e0e0;
-  border-radius: 4px;
+  display: none;
 }
 </style>

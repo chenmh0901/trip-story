@@ -70,9 +70,15 @@ const removeImage = (index: number) => {
 const { user } = useUserStore()
 const { posts, draft } = usePostsStore()
 
+const userStore = useUserStore()
+const isLoggedIn = computed(() => userStore.user && userStore.user.id !== 0)
+
 // 发布日记
 const publishPost = () => {
-  console.log('Publishing post:', postData.value)
+  if (!isLoggedIn.value) {
+    alert('请先登录后再发布帖子')
+    return
+  }
   postData.value.cover = postData.value.images?.[0] ?? ''
   postData.value.author = user
   postData.value.createdAt = formatDate()

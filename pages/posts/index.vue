@@ -46,6 +46,10 @@ const handleSaveDraft = (post: Post) => {
   saveDraft(post)
   showUploadPost.value = false
 }
+
+const handleShowUploadPost = () => {
+  showUploadPost.value = true
+}
 </script>
 
 <template>
@@ -90,7 +94,7 @@ const handleSaveDraft = (post: Post) => {
         content: 'max-w-5xl',
       }"
     >
-      <button class="fixed right-8 bottom-8 rounded-full w-14 h-14 shadow-lg text-white bg-blue-600 text-3xl flex items-center justify-center" @click="showUploadPost = true">+</button>
+      <button class="fixed right-8 bottom-8 rounded-full w-14 h-14 shadow-lg text-white bg-blue-600 text-3xl flex items-center justify-center" @click="handleShowUploadPost">+</button>
 
       <template #body>
         <div class="w-full">
